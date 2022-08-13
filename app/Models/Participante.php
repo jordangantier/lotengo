@@ -13,5 +13,6 @@ class Participante extends Model
         'nombre',
         'ci_nit',
         'fecha_nac',
+        'created_at',
     ];
 }

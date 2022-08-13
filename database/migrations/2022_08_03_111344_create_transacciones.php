@@ -27,6 +27,7 @@ class CreateTransacciones extends Migration
                 ->constrained('participantes');
             $table->Integer('monto_acumulado');
             $table->smallInteger('qty_boletos');
+            $table->json('habilitados');
             $table->timestamps();
         });
     }

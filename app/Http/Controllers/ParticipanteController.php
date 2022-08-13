@@ -15,7 +15,7 @@ class ParticipanteController extends Controller
      */
     public function index()
     {
-        $participantes = Participante::select('ci_nit', 'nombre', 'fecha_nac')->get();
+        $participantes = Participante::select('id', 'ci_nit', 'nombre', 'fecha_nac')->get();
         return $participantes;
     }
 

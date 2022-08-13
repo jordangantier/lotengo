@@ -15,8 +15,8 @@ class CreateParticipantes extends Migration
     {
         Schema::create('participantes', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('ci_nit')->unique();
             $table->string('nombre', 255);
-            $table->unsignedBigInteger('ci_nit');
             $table->date('fecha_nac');
             $table->timestamps();
         });

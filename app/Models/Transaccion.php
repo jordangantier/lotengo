@@ -12,5 +12,8 @@ class Transaccion extends Model
     protected $fillable = [
         'monto_acumulado',
         'qty_boletos',
+        'habilitados',
+        'facturas',
+        'id_participante',
     ];
 }

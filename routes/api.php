@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ParticipanteController;
 use App\Http\Controllers\BoletoController;
+use App\Http\Controllers\TransaccionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,5 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('/participantes', ParticipanteController::class);
-Route::apiResource('/habilitados', BoletoController::class);
+Route::get('/participantes', [ParticipanteController::class, 'index']);
+Route::get('/habilitados', [BoletoController::class, 'index']);
+Route::post('/insertardata', [TransaccionController::class, 'store']);
