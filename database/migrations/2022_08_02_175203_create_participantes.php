@@ -18,6 +18,8 @@ class CreateParticipantes extends Migration
             $table->unsignedBigInteger('ci_nit')->unique();
             $table->string('nombre', 255);
             $table->date('fecha_nac');
+            $table->integer('telefono')->nullable();
+            $table->string('email', 255)->nullable();
             $table->timestamps();
         });
     }

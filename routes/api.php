@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ParticipanteController;
 use App\Http\Controllers\BoletoController;
 use App\Http\Controllers\TransaccionController;
+use App\Http\Controllers\DatosImpresionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,5 +23,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/participantes', [ParticipanteController::class, 'index']);
+Route::get('/datosimpresion/{id}', [DatosImpresionController::class, 'show']);
 Route::get('/habilitados', [BoletoController::class, 'index']);
 Route::post('/insertardata', [TransaccionController::class, 'store']);

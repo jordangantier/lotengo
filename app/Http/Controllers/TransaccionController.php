@@ -15,16 +15,6 @@ use App\Models\Boleto;
 class TransaccionController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -39,6 +29,8 @@ class TransaccionController extends Controller
             $participante['nombre'] = $request->nombre;
             $participante['ci_nit'] = $request->ci_nit;
             $participante['fecha_nac'] = $request->fecha_nac;
+            $participante['telefono'] = $request->telefono;
+            $participante['email'] = $request->email;
             $participante['created_at'] = Carbon::now();
             $participante->save();
             $id_part = Participante::select('id')->where('ci_nit', $request->ci_nit)->get();
@@ -62,7 +54,6 @@ class TransaccionController extends Controller
             }
         } else {
             //Guarda la transacción.
-            //dd($request);
             $transaccion = new Transaccion();
             $transaccion['id_participante'] = $request['id_participante'];
             $transaccion['monto_acumulado'] = $request['monto_acumulado'];
@@ -80,39 +71,5 @@ class TransaccionController extends Controller
                 $habilitar->update();
             }
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
