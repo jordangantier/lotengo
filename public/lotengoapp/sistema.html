@@ -7,7 +7,32 @@
   <meta name="viewport" content="width=device-width" />
   <link rel="stylesheet" href="./css/index.css">
   <link rel="icon" type="image/png" href="./assets/favicon.png" />
-  <script type="module" src="app.js"></script>
+  <script type="module" src="./app.js"></script>
+  <style>
+    table.customTable {
+      width: auto;
+      min-width: 900px;
+      background-color: #FFFFFF;
+      border-collapse: collapse;
+      border-width: 2px;
+      border-color: #7EA8F8;
+      border-style: solid;
+      color: #000000;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    table.customTable td, table.customTable th {
+      border-width: 2px;
+      border-color: #7EA8F8;
+      border-style: solid;
+      padding: 5px;
+    }
+
+    table.customTable thead {
+      background-color: #000000;
+      color: white;
+    }
+    </style>
 </head>
 
 <body class="bg-stone-50">
@@ -39,7 +64,7 @@
           <p class="
                 relative
                 z-10
-               
+
                 border border-blue-500
                  text-center
                 px-4
@@ -53,7 +78,7 @@
                 after:h-0.5
                 after:bg-blue-500
                 after:z-0
-                
+
               " id="btnPasoUno" >
             Ingreso de Facturas
           </p>
@@ -123,7 +148,7 @@
                         <label class="text-sm font-medium uppercase" for="nit">
                           NIT o CI
                         </label>
-                        <div class="grid grid-cols-[1fr_auto] gap-4">
+                        <div class="flex flex-col gap-1 justify-start">
                           <input type="number" class="
                                 w-full
                                 bg-stone-300
@@ -133,25 +158,11 @@
                                 rounded
                                 outline-none
                               " id="nit" placeholder="Ingrese el NIT o Carnet de Identidad" />
-                          <button id="loadNit" type="button" class="
-                                bg-blue-500
-                                text-stone-50 text-sm
-                                px-4
-                                py-2
-                                rounded-md
-                                hover:bg-blue-600
-                                transition
-                                ease-in
-                                duration-150
-                                required
-                              ">
-                            Comprobar
-                          </button>
                         </div>
                       </div>
                     </div>
                     <div>
-                      <p id="avisoNit" class="text-sm text-red-500">
+                      <p id="avisoNit" class="text-sm text-green-500">
                     </div>
                   </div>
                   <div class="flex flex-col gap-1 justify-start">
@@ -185,6 +196,30 @@
                           outline-none
                           required
                         " id="fechaNacimiento" />
+                  </div>
+                  <div class="flex flex-col gap-1 mt-2 mb-6">
+                    <label class="text-sm font-medium uppercase" for="telefono">Número de teléfono</label>
+                    <input type="number" class="
+                          bg-stone-300
+                          text-stone-900
+                          px-3
+                          py-2
+                          rounded
+                          outline-none
+                          required
+                        " id="telefono" />
+                  </div>
+                  <div class="flex flex-col gap-1 mt-2 mb-6">
+                    <label class="text-sm font-medium uppercase" for="email">Correo electrónico</label>
+                    <input type="email" class="
+                          bg-stone-300
+                          text-stone-900
+                          px-3
+                          py-2
+                          rounded
+                          outline-none
+                          required
+                        " id="email" />
                   </div>
                   <hr />
                   <div class="
@@ -473,7 +508,7 @@
                           ">
                         <tbody id="displayCartonesHabilitados">
                           <tr class="bg-stone-200 border-b">
-                            
+
                           </tr>
                         </tbody>
                       </table>
@@ -525,10 +560,9 @@
             ">
           <div id="mensajeFinal" class="max-w-md text-center">
             <p>
-              El cliente JUAN LOPEZ registró correctamente 4 cartones para el
-              primer sorteo en fecha 15/09/2022
             </p>
           </div>
+          <div><input type="button" value="Imprimir" id="btnImprimir" ></div>
           <div>
             <a href="./sistema.html" class="
                   bg-green-400

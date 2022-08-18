@@ -30,32 +30,104 @@ const printDiv = document.getElementById("print");
 const btnPasoUno = document.getElementById("btnPasoUno");
 const btnPasoDos = document.getElementById("btnPasoDos");
 const btnPasoTres = document.getElementById("btnPasoTres");
+const telefono = document.getElementById("telefono");
+const email = document.getElementById("email");
+const btnImprimir = document.getElementById("btnImprimir");
 
 let idParticipante = "";
 let cartonesAdescontar = 0;
 let seriesHabilitadas = [];
 const montosFacturas = [];
+let fecha = new Date().toLocaleString().replace(",", "").replace(/:.. /, " ").replace("/", "-").replace("/", "-");
+btnImprimir.addEventListener("click", () => {
 
-window.onload = function () {
-    fetch("http://lotengo.test/api/habilitados")
+    fetch(`http://192.22.0.247/lotengo/public/api/datosimpresion/${nitValue.value}`).
+    then((response) => response.json())
+    .then((data) => {
+        printDiv.innerHTML  = `<table class="customTable">
+<thead>
+<tr>
+<th colspan="2"><strong>REGISTRO CLIENTES</strong></th>
+<th colspan="2"><strong>LBS/MKT/ASIF <br>INFORMACIONES</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CLIENTE</strong></td>
+<td>${data[0].nombre}</td>
+<td><strong>ASIF</strong></td>
+<td>${data[0].usuario}</td>
+</tr>
+<tr>
+<td><strong>TELEFONO</strong></td>
+<td>${data[0].telefono}</td>
+<td><strong>CI o NIT</strong></td>
+<td>${data[0].ci_nit}</td>
+</tr>
+<tr>
+<td><strong>CAMPAÑA</strong></td>
+<td>Lotengo!</td>
+<td><strong>E-MAIL</strong></td>
+<td>${data[0].email}</td>
+</tr>
+<tr>
+<td><strong>MONTO TOTAL FACTURAS</strong></td>
+<td>Bs.- ${data[0].monto_acumulado}</td>
+<td><strong>CANT. CARTONES</strong></td>
+<td>${data[0].qty_boletos}</td>
+</tr>
+<tr>
+<td><strong>Nº DE REGISTRO</strong></td>
+<td>${data[0].id_transaccion}</td>
+<td><strong>CARTONES HABILITADOS</strong></td>
+<td>${JSON.parse(data[0].habilitados).map(value =>{return value }).join(', ')}</td>
+</tr>
+<tr style="height: 100px;">
+<td><strong>FECHA</strong></td>
+<td>${data[0].fecha}</td>
+<td><strong>FIRMA CLIENTE</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>`;
+printContent();
+}).catch((error) => {
+    console.log(error);
+} );
+} );
+
+monto.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+        //e.preventDefault();
+        addFactura(e);
+        comercio.focus();
+    }
+});
+serieCarton.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+        //e.preventDefault();
+        loadSerie();
+    }
+});
+function leerDatosCartones() {
+    fetch("http://192.22.0.247/lotengo/public/api/habilitados")
         .then((response) => response.json())
         .then((data) => {
             cartonesPorHabilitar.innerText = `Cartones por habilitar: ${data.length}`;
         })
         .catch((error) => console.log(error));
 };
+leerDatosCartones()
 btnSerie.addEventListener("click", () => {
     loadSerie();
 });
 
-agregarFactura.addEventListener("click", addFactura);
-loadNitUI.addEventListener("click", function () {
-    if (nitValue.value != "") {
-        loadNit();
-    } else {
-        alert("Debe ingresar un NIT");
-    }
+nitValue.addEventListener("blur", () => {
+    loadNit();
 });
+
+agregarFactura.addEventListener("click", addFactura);
+
 
 displayCartonesHabilitados.addEventListener("click", function (e) {
     if (e.path[0].alt === "Eliminar_Codigo") {
@@ -82,11 +154,13 @@ siguienteUno.addEventListener("click", function () {
         nitValue.value !== "" &&
         nombre.value !== "" &&
         fechaNacimiento.value !== "" &&
+        telefono.value !== "" &&
+        email.value !== "" &&
         calcularCartones(sumarFacturas()) > 0
     ) {
         let edad = calcularEdad(fechaNacimiento.value);
         if (edad >= 18) {
-            printDiv.innerHTML = `Nombre: ${nombre.value} <br> Nit o CI: ${nitValue.value}`;
+            printDiv.innerHTML = `Nombre: ${nombre.value} <br> Nit o CI: ${nitValue.value} <br> Fecha de Nacimiento: ${fechaNacimiento.value} <br> Telefono: ${telefono.value} <br> Edad: ${edad} <br>`;
             goToSection("pasoDos", "btnPasoDos");
         } else {
             alert("el participante debe ser mayor de edad");
@@ -102,10 +176,13 @@ anteriorUno.addEventListener("click", function () {
 
 siguienteDos.addEventListener("click", function () {
     if (cartonesFaltantes.innerText == 0) {
-        guardarCliente();
-        avisoFinal();
-        printContent("print");
-        goToSection("pasoTres", "btnPasoTres");
+
+      guardarCliente()
+      avisoFinal();
+      leerDatosCartones()
+      goToSection("pasoTres", "btnPasoTres");
+
+
     } else {
         alert("Debe habilitar todos los cartones");
     }
@@ -259,9 +336,8 @@ function calcularMontoFaltanteParaMasCartones() {
     }
     let cartones = calcularCartones(sumarFacturas()) + 1;
 
-    return `<div class="bg-blue-500 text-stone-50 text-xs px-3 py-2 font-medium mt-4"><p> Te falta Bs.- ${montoFaltante} para poder canjear ${
-        cartones === 1 ? `${cartones} cartón` : `${cartones} cartones`
-    }</p></div>`;
+    return `<div class="bg-blue-500 text-stone-50 text-xs px-3 py-2 font-medium mt-4"><p> Te falta Bs.- ${montoFaltante} para poder canjear ${cartones === 1 ? `${cartones} cartón` : `${cartones} cartones`
+        }</p></div>`;
 }
 
 function eliminarSerie(serie) {
@@ -277,7 +353,7 @@ function eliminarSerie(serie) {
 // Funciones para el manejo de la base de datos
 
 function loadNit() {
-    fetch("http://lotengo.test/api/participantes")
+    fetch("http://192.22.0.247/lotengo/public/api/participantes")
         .then((response) => response.json())
         .then((data) => {
             const found = data.find(
@@ -287,9 +363,13 @@ function loadNit() {
                 nombre.value = found.nombre;
                 fechaNacimiento.value = found.fecha_nac;
                 idParticipante = found.id;
+                telefono.value = found.telefono ? found.telefono : "0";
+                email.value = found.email ? found.email : "@";
                 avisoNit.innerText = "";
                 nombre.disabled = true;
                 fechaNacimiento.disabled = true;
+                telefono.disabled = true;
+                email.disabled = true;
             } else {
                 avisoNit.innerText =
                     "¡El NIT no se encontró en la base de datos!.";
@@ -297,7 +377,11 @@ function loadNit() {
                 fechaNacimiento.value = "";
                 nombre.disabled = false;
                 fechaNacimiento.disabled = false;
+                telefono.disabled = false;
+                email.disabled = false;
             }
+        }).catch((error) => {
+            alert("Error al consultar el CI o NIT: " + error);
         });
 }
 function loadSerie() {
@@ -305,7 +389,7 @@ function loadSerie() {
     if (serieCarton.value === "" || cartonesAdescontar === 0) {
         alert("Debe ingresar un numero de serie");
     } else {
-        fetch("http://lotengo.test/api/habilitados")
+        fetch("http://192.22.0.247/lotengo/public/api/habilitados")
             .then((response) => response.json())
             .then((data) => {
                 const found = data.find(
@@ -329,7 +413,10 @@ function loadSerie() {
                 } else {
                     aviso(false);
                 }
-            });
+            }).catch((error) => {
+                alert("Error al consultar la serie " + error);
+            }
+            );
     }
 }
 function guardarCliente() {
@@ -344,6 +431,8 @@ function guardarCliente() {
             nombre: nombre.value,
             ci_nit: nitValue.value,
             fecha_nac: fechaNacimiento.value,
+            telefono: telefono.value,
+            email: email.value,
             facturas: JSON.stringify(montosFacturas),
             monto_acumulado: sumarFacturas(),
             qty_boletos: calcularCartones(sumarFacturas()),
@@ -352,10 +441,10 @@ function guardarCliente() {
         }),
     };
 
-    fetch("http://lotengo.test/api/insertardata", options)
-        .then((response) => response.json())
+    fetch("http://192.22.0.247/lotengo/public/api/insertardata", options)
+        .then((response) => response.text())
         .then((response) => console.log(response))
-        .catch((err) => console.error(err));
+        .catch((err) => console.log(err));
 }
 //
 
@@ -387,24 +476,25 @@ function aviso(registro = false) {
     if (registro) {
         avisoRegistro.innerHTML = `<div class="bg-green-500 text-stone-50 px-6 py-3 transition ease-in-out duration-250"><p>¡Registro exitoso!</p></div>`;
     } else {
-        avisoRegistro.innerHTML = `<div class="bg-red-500 text-stone-50 px-6 py-3 transition ease-in-out duration-250"><p>¡Error al registrar!</p></div>`;
+        avisoRegistro.innerHTML = `<div class="bg-red-500 text-stone-50 px-6 py-3 transition ease-in-out duration-250"><p>¡Cartón no disponible!</p></div>`;
     }
     setTimeout(() => {
         avisoRegistro.innerHTML = "";
     }, 3000);
 }
 function avisoFinal() {
-    mensajeFinal.innerHTML = `<div class="bg-green-500 text-stone-50 px-6 py-3"><p>El cliente ${
-        nombre.value
-    } registró correctamente ${calcularCartones(
-        sumarFacturas()
-    )} cartones para el
+    mensajeFinal.innerHTML = `<div class="bg-green-500 text-stone-50 px-6 py-3"><p>El cliente ${nombre.value
+        } registró correctamente ${calcularCartones(
+            sumarFacturas()
+        )} cartones para el
 primer sorteo en fecha 15/09/2022</p></div>`;
 }
-function printContent(el) {
+
+function printContent() {
     var restorepage = document.body.innerHTML;
-    var printcontent = document.getElementById(el).innerHTML;
+    var printcontent = document.getElementById('print').innerHTML;
     document.body.innerHTML = printcontent;
     window.print();
     document.body.innerHTML = restorepage;
-}
+    }
+
