@@ -14,6 +14,9 @@ class ParticipanteController extends Controller
     public function index()
     {
         $participantes = Participante::select('id', 'ci_nit', 'nombre', 'telefono', 'email', 'fecha_nac')->get();
+        if ($participantes == '[]') {
+            $participantes = json_decode('[{"msg":"Participante no registrado en el sistema."}]');
+        }
         return $participantes;
     }
 }

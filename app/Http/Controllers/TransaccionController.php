@@ -71,5 +71,6 @@ class TransaccionController extends Controller
                 $habilitar->update();
             }
         }
+        return json_decode('[{"msg":"OK"}]');
     }
 }
