@@ -86,7 +86,7 @@
                                         comercial Las Brisas!.
                                     </p>
                                 </div>
-                                <div class="h-full mt-4">
+                                <div class="h-full mt-2">
                                     <div class="flex flex-col gap-1 justify-start">
                                         <div class="grid grid-cols-[1fr_auto] justify-center items-end">
                                             <div class="flex flex-col gap-1">
@@ -113,15 +113,15 @@
                                             <input type="text" class="bg-stone-300 text-stone-900 px-3 py-2 rounded outline-none required" id="nombre" placeholder="Ingrese el nombre o razón social" />
                                         </div>
                                     </div>
-                                    <div class="flex flex-col gap-1 mt-2 mb-6">
+                                    <div class="flex flex-col gap-1 mt-2">
                                         <label class="text-sm font-medium uppercase" for="fechaNacimiento">Fecha de Naciemiento</label>
                                         <input type="date" class="bg-stone-300 text-stone-900 px-3 py-2 rounded outline-none required" id="fechaNacimiento" />
                                     </div>
-                                    <div class="flex flex-col gap-1 mt-2 mb-6">
+                                    <div class="flex flex-col gap-1 mt-2">
                                         <label class="text-sm font-medium uppercase" for="telefono">Número de teléfono</label>
                                         <input type="number" class="bg-stone-300 text-stone-900 px-3 py-2 rounded outline-none required" id="telefono" />
                                     </div>
-                                    <div class="flex flex-col gap-1 mt-2 mb-6">
+                                    <div class="flex flex-col gap-1 mt-2">
                                         <label class="text-sm font-medium uppercase" for="email">Correo electrónico</label>
                                         <input type="email" class="bg-stone-300 text-stone-900 px-3 py-2 rounded outline-none required" id="email" />
                                     </div>
@@ -387,6 +387,11 @@
     input[type="number"]::-webkit-outer-spin-button {
         -webkit-appearance: none;
         margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
     }
 </style>
 
