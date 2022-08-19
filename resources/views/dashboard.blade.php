@@ -77,6 +77,15 @@
                                 <h2 class="text-center text-base font-bold uppercase">
                                     Ingreso de facturas
                                 </h2>
+                                <div class="mt-4">
+                                    <p class="text-sm text-red-500">
+                                        ¡Revise que todas las
+                                        facturas tengan el mismo
+                                        nombre y la sucursal
+                                        pertenezca al centro
+                                        comercial Las Brisas!.
+                                    </p>
+                                </div>
                                 <div class="h-full mt-4">
                                     <div class="flex flex-col gap-1 justify-start">
                                         <div class="grid grid-cols-[1fr_auto] justify-center items-end">
@@ -102,15 +111,6 @@
                                             <label class="text-sm font-medium uppercase" for="nombre">Nombre o razón
                                                 social</label>
                                             <input type="text" class="bg-stone-300 text-stone-900 px-3 py-2 rounded outline-none required" id="nombre" placeholder="Ingrese el nombre o razón social" />
-                                        </div>
-                                        <div>
-                                            <p class="text-sm text-red-500">
-                                                ¡Revise que todas las
-                                                facturas tengan el mismo
-                                                nombre y la sucursal
-                                                pertenezca al centro
-                                                comercial Las Brisas!.
-                                            </p>
                                         </div>
                                     </div>
                                     <div class="flex flex-col gap-1 mt-2 mb-6">
