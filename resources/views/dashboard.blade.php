@@ -209,7 +209,7 @@
                                                     <option value="MULTICINE"></option>
                                                     <option value="NUTREXPLOSION"></option>
                                                     <option value="ÓPTICA PRECISIÓN"></option>
-                                                    <option value="OSHKOSH"></option>
+                                                    <option value="OSHKOSH / KID COLLECTION"></option>
                                                     <option value="PACHA WOODS"></option>
                                                     <option value="PANINO"></option>
                                                     <option value="PEDRO DEL HIERRO"></option>
