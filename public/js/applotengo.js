@@ -1,4 +1,5 @@
 // Variables Globales
+const idUser = document.getElementById("idUser");
 const nitValue = document.getElementById("nit");
 const loadNitUI = document.getElementById("loadNit");
 const nombre = document.getElementById("nombre");
@@ -38,13 +39,17 @@ let idParticipante = "";
 let cartonesAdescontar = 0;
 let seriesHabilitadas = [];
 const montosFacturas = [];
-let fecha = new Date().toLocaleString().replace(",", "").replace(/:.. /, " ").replace("/", "-").replace("/", "-");
+let fecha = new Date()
+    .toLocaleString()
+    .replace(",", "")
+    .replace(/:.. /, " ")
+    .replace("/", "-")
+    .replace("/", "-");
 btnImprimir.addEventListener("click", () => {
-
-    fetch(`http://192.22.0.247/lotengo/public/api/datosimpresion/${nitValue.value}`).
-    then((response) => response.json())
-    .then((data) => {
-        printDiv.innerHTML  = `<table class="customTable">
+    fetch(`/api/datosimpresion/${nitValue.value}`)
+        .then((response) => response.json())
+        .then((data) => {
+            printDiv.innerHTML = `<table class="customTable">
 <thead>
 <tr>
 <th colspan="2"><strong>REGISTRO CLIENTES</strong></th>
@@ -80,7 +85,11 @@ btnImprimir.addEventListener("click", () => {
 <td><strong>Nº DE REGISTRO</strong></td>
 <td>${data[0].id_transaccion}</td>
 <td><strong>CARTONES HABILITADOS</strong></td>
-<td>${JSON.parse(data[0].habilitados).map(value =>{return value }).join(', ')}</td>
+<td>${JSON.parse(data[0].habilitados)
+                .map((value) => {
+                    return value;
+                })
+                .join(", ")}</td>
 </tr>
 <tr style="height: 100px;">
 <td><strong>FECHA</strong></td>
@@ -90,11 +99,12 @@ btnImprimir.addEventListener("click", () => {
 </tr>
 </tbody>
 </table>`;
-printContent();
-}).catch((error) => {
-    console.log(error);
-} );
-} );
+            printContent();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+});
 
 monto.addEventListener("keypress", function (e) {
     if (e.key === "Enter") {
@@ -110,14 +120,14 @@ serieCarton.addEventListener("keypress", function (e) {
     }
 });
 function leerDatosCartones() {
-    fetch("http://192.22.0.247/lotengo/public/api/habilitados")
+    fetch("/api/habilitados")
         .then((response) => response.json())
         .then((data) => {
             cartonesPorHabilitar.innerText = `Cartones por habilitar: ${data.length}`;
         })
         .catch((error) => console.log(error));
-};
-leerDatosCartones()
+}
+leerDatosCartones();
 btnSerie.addEventListener("click", () => {
     loadSerie();
 });
@@ -127,7 +137,6 @@ nitValue.addEventListener("blur", () => {
 });
 
 agregarFactura.addEventListener("click", addFactura);
-
 
 displayCartonesHabilitados.addEventListener("click", function (e) {
     if (e.path[0].alt === "Eliminar_Codigo") {
@@ -176,13 +185,10 @@ anteriorUno.addEventListener("click", function () {
 
 siguienteDos.addEventListener("click", function () {
     if (cartonesFaltantes.innerText == 0) {
-
-      guardarCliente()
-      avisoFinal();
-      leerDatosCartones()
-      goToSection("pasoTres", "btnPasoTres");
-
-
+        guardarCliente();
+        avisoFinal();
+        leerDatosCartones();
+        goToSection("pasoTres", "btnPasoTres");
     } else {
         alert("Debe habilitar todos los cartones");
     }
@@ -265,14 +271,14 @@ function pintarFacturas() {
                 transition
                 ease-in
                 duration-150
-              "><img src="./assets/pencil.svg" alt="Editar"></button><button type="button" class="
+              "><img src="img/pencil.svg" alt="Editar"></button><button type="button" class="
                 text-lg text-black
                 hover:text-red-600
                 transition
                 ease-in
                 duration-150
                 eliminar
-              "><img src="./assets/trash.svg" alt="Eliminar" /></button></td></tr>`;
+              "><img src="img/trash.svg" alt="Eliminar" /></button></td></tr>`;
     });
 }
 
@@ -299,7 +305,7 @@ function pintarNumerosDeSerie() {
                   transition
                   ease-in
                   duration-150
-                "><img src="./assets/trash.svg" alt="Eliminar_Codigo"></button></td></tr>`;
+                "><img src="img/trash.svg" alt="Eliminar_Codigo"></button></td></tr>`;
     });
 }
 
@@ -336,8 +342,9 @@ function calcularMontoFaltanteParaMasCartones() {
     }
     let cartones = calcularCartones(sumarFacturas()) + 1;
 
-    return `<div class="bg-blue-500 text-stone-50 text-xs px-3 py-2 font-medium mt-4"><p> Te falta Bs.- ${montoFaltante} para poder canjear ${cartones === 1 ? `${cartones} cartón` : `${cartones} cartones`
-        }</p></div>`;
+    return `<div class="bg-blue-500 text-stone-50 text-xs px-3 py-2 font-medium mt-4"><p> Te falta Bs.- ${montoFaltante} para poder canjear ${
+        cartones === 1 ? `${cartones} cartón` : `${cartones} cartones`
+    }</p></div>`;
 }
 
 function eliminarSerie(serie) {
@@ -353,7 +360,7 @@ function eliminarSerie(serie) {
 // Funciones para el manejo de la base de datos
 
 function loadNit() {
-    fetch("http://192.22.0.247/lotengo/public/api/participantes")
+    fetch("/api/participantes")
         .then((response) => response.json())
         .then((data) => {
             const found = data.find(
@@ -380,7 +387,8 @@ function loadNit() {
                 telefono.disabled = false;
                 email.disabled = false;
             }
-        }).catch((error) => {
+        })
+        .catch((error) => {
             alert("Error al consultar el CI o NIT: " + error);
         });
 }
@@ -389,7 +397,7 @@ function loadSerie() {
     if (serieCarton.value === "" || cartonesAdescontar === 0) {
         alert("Debe ingresar un numero de serie");
     } else {
-        fetch("http://192.22.0.247/lotengo/public/api/habilitados")
+        fetch("/api/habilitados")
             .then((response) => response.json())
             .then((data) => {
                 const found = data.find(
@@ -413,10 +421,10 @@ function loadSerie() {
                 } else {
                     aviso(false);
                 }
-            }).catch((error) => {
+            })
+            .catch((error) => {
                 alert("Error al consultar la serie " + error);
-            }
-            );
+            });
     }
 }
 function guardarCliente() {
@@ -428,6 +436,7 @@ function guardarCliente() {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({
+            id_user: idUser.value,
             nombre: nombre.value,
             ci_nit: nitValue.value,
             fecha_nac: fechaNacimiento.value,
@@ -441,7 +450,7 @@ function guardarCliente() {
         }),
     };
 
-    fetch("http://192.22.0.247/lotengo/public/api/insertardata", options)
+    fetch("/api/insertardata", options)
         .then((response) => response.text())
         .then((response) => console.log(response))
         .catch((err) => console.log(err));
@@ -483,18 +492,18 @@ function aviso(registro = false) {
     }, 3000);
 }
 function avisoFinal() {
-    mensajeFinal.innerHTML = `<div class="bg-green-500 text-stone-50 px-6 py-3"><p>El cliente ${nombre.value
-        } registró correctamente ${calcularCartones(
-            sumarFacturas()
-        )} cartones para el
+    mensajeFinal.innerHTML = `<div class="bg-green-500 text-stone-50 px-6 py-3"><p>El cliente ${
+        nombre.value
+    } registró correctamente ${calcularCartones(
+        sumarFacturas()
+    )} cartones para el
 primer sorteo en fecha 15/09/2022</p></div>`;
 }
 
 function printContent() {
     var restorepage = document.body.innerHTML;
-    var printcontent = document.getElementById('print').innerHTML;
+    var printcontent = document.getElementById("print").innerHTML;
     document.body.innerHTML = printcontent;
     window.print();
     document.body.innerHTML = restorepage;
-    }
-
+}

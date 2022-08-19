@@ -14,9 +14,9 @@ class DatosImpresionController extends Controller
      */
     public function show($id)
     {
-        $toPrint = Transaccion::select('transaccions.id as id_transaccion', /*'users.name as usuario',*/ 'nombre', 'ci_nit', 'telefono', 'participantes.email', 'transaccions.created_at as fecha', 'monto_acumulado', 'qty_boletos', 'habilitados')
+        $toPrint = Transaccion::select('transaccions.id as id_transaccion', 'users.name as usuario', 'nombre', 'ci_nit', 'telefono', 'participantes.email', 'transaccions.created_at as fecha', 'monto_acumulado', 'qty_boletos', 'habilitados')
             ->join('participantes', 'participantes.id', '=', 'transaccions.id_participante')
-            //->join('users', 'users.id', '=', 'transaccions.id_user')
+            ->join('users', 'users.id', '=', 'transaccions.id_user')
             ->where('ci_nit', $id)
             ->orderBy('id_transaccion', 'DESC')
             ->limit(1)

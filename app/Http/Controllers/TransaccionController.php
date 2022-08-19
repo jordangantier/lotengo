@@ -37,6 +37,7 @@ class TransaccionController extends Controller
 
             //Guarda la transacción.
             $transaccion = new Transaccion();
+            $transaccion['id_user'] = $request['id_user'];
             $transaccion['id_participante'] = $id_part[0]->id;
             $transaccion['monto_acumulado'] = $request['monto_acumulado'];
             $transaccion['qty_boletos'] = $request['qty_boletos'];
@@ -55,6 +56,7 @@ class TransaccionController extends Controller
         } else {
             //Guarda la transacción.
             $transaccion = new Transaccion();
+            $transaccion['id_user'] = $request['id_user'];
             $transaccion['id_participante'] = $request['id_participante'];
             $transaccion['monto_acumulado'] = $request['monto_acumulado'];
             $transaccion['qty_boletos'] = $request['qty_boletos'];
