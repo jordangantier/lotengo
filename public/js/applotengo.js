@@ -370,8 +370,8 @@ function loadNit() {
                 nombre.value = found.nombre;
                 fechaNacimiento.value = found.fecha_nac;
                 idParticipante = found.id;
-                telefono.value = found.telefono ? found.telefono : "0";
-                email.value = found.email ? found.email : "@";
+                telefono.value = found.telefono;
+                email.value = found.email;
                 avisoNit.innerText = "";
                 nombre.disabled = true;
                 fechaNacimiento.disabled = true;
