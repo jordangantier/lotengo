@@ -209,7 +209,7 @@
                                                     <option value="MULTICINE"></option>
                                                     <option value="NUTREXPLOSION"></option>
                                                     <option value="ÓPTICA PRECISIÓN"></option>
-                                                    <option value="OSHKOSH"></option>
+                                                    <option value="OSHKOSH / KID COLLECTION"></option>
                                                     <option value="PACHA WOODS"></option>
                                                     <option value="PANINO"></option>
                                                     <option value="PEDRO DEL HIERRO"></option>
@@ -366,13 +366,14 @@
                         <p></p>
                     </div>
                     <div>
-                        <input type="button" value="Imprimir" id="btnImprimir" />
+                        <span id="btnImprimir"><img src="/img/print.svg" alt="Imprimir" width="50" style="margin: 30px auto;"></span>
                     </div>
                     <div>
-                        <a href="{{route('dashboard')}}" class="bg-green-400 px-4 py-2 mt-6 block text-stone-50 uppercase rounded-md text-sm text-center hover:bg-green-500 transition ease-in duration-150">
-                            Nuevo registro
-                        </a>
-                    </div>
+                        <div>
+                            <a href="{{route('dashboard')}}" class="bg-green-400 px-4 py-2 mt-6 block text-stone-50 uppercase rounded-md text-sm text-center hover:bg-green-500 transition ease-in duration-150">
+                                Nuevo registro
+                            </a>
+                        </div>
                 </section>
             </form>
         </main>
