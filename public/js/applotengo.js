@@ -375,8 +375,8 @@ function loadNit() {
                 avisoNit.innerText = "";
                 nombre.disabled = true;
                 fechaNacimiento.disabled = true;
-                telefono.disabled = true;
-                email.disabled = true;
+                telefono.disabled = found.telefono===0?false:true;
+                email.disabled = found.telefono==='@'?false:true;
             } else {
                 avisoNit.innerText =
                     "¡El NIT no se encontró en la base de datos!.";
