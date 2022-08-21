@@ -8,32 +8,6 @@
     <link rel="stylesheet" href="{{asset ('css/index.css')}}" />
     <link rel="icon" type="image/png" href="{{asset ('img/favicon.png')}}" />
     <script type="module" src="{{asset ('js/applotengo.js')}}"></script>
-    <style>
-        table.customTable {
-            width: auto;
-            min-width: 900px;
-            background-color: #ffffff;
-            border-collapse: collapse;
-            border-width: 2px;
-            border-color: #7ea8f8;
-            border-style: solid;
-            color: #000000;
-            font-family: "Courier New", Courier, monospace;
-        }
-
-        table.customTable td,
-        table.customTable th {
-            border-width: 2px;
-            border-color: #7ea8f8;
-            border-style: solid;
-            padding: 5px;
-        }
-
-        table.customTable thead {
-            background-color: #000000;
-            color: white;
-        }
-    </style>
 </head>
 
 <body class="bg-stone-50">
@@ -338,7 +312,7 @@
                                     <h2 class="text-center text-base font-bold uppercase">
                                         Cartones habilitados
                                     </h2>
-                                    <div class="h-64 min-h-full bg-stone-300">
+                                    <div class="min-h-full bg-stone-300">
                                         <div class="overflow-x-auto relative">
                                             <table class="w-full min-h-full text-sm text-left text-gray-500">
                                                 <tbody id="displayCartonesHabilitados">
