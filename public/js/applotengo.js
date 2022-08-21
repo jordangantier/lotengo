@@ -1,7 +1,7 @@
+import imprimir from "./imprimir.js";
 // Variables Globales
 const idUser = document.getElementById("idUser");
 const nitValue = document.getElementById("nit");
-const loadNitUI = document.getElementById("loadNit");
 const nombre = document.getElementById("nombre");
 const fechaNacimiento = document.getElementById("fechaNacimiento");
 const avisoNit = document.getElementById("avisoNit");
@@ -17,7 +17,6 @@ const montoFaltante = document.getElementById("montoFaltante");
 const siguienteUno = document.getElementById("siguienteUno");
 const siguienteDos = document.getElementById("siguienteDos");
 const anteriorUno = document.getElementById("anteriorUno");
-const nuevoRegistro = document.getElementById("nuevoRegistro");
 const cartonesFaltantes = document.getElementById("cartonesFaltantes");
 const serieCarton = document.getElementById("serieCarton");
 const btnSerie = document.getElementById("btnSerie");
@@ -28,12 +27,10 @@ const displayCartonesHabilitados = document.getElementById(
 );
 const cartonesPorHabilitar = document.getElementById("cartonesPorHabilitar");
 const printDiv = document.getElementById("print");
-const btnPasoUno = document.getElementById("btnPasoUno");
-const btnPasoDos = document.getElementById("btnPasoDos");
-const btnPasoTres = document.getElementById("btnPasoTres");
 const telefono = document.getElementById("telefono");
 const email = document.getElementById("email");
 const btnImprimir = document.getElementById("btnImprimir");
+const print = document.getElementById("print");
 
 let idParticipante = "";
 let cartonesAdescontar = 0;
@@ -79,7 +76,7 @@ btnImprimir.addEventListener("click", () => {
 <td><strong>MONTO TOTAL FACTURAS</strong></td>
 <td>Bs.- ${data[0].monto_acumulado}</td>
 <td><strong>CANT. CARTONES</strong></td>
-<td>${data[0].qty_boletos}</td>
+<td>${JSON.parse(data[0].habilitados).length}</td>
 </tr>
 <tr>
 <td><strong>Nº DE REGISTRO</strong></td>
@@ -99,7 +96,7 @@ btnImprimir.addEventListener("click", () => {
 </tr>
 </tbody>
 </table>`;
-            printContent();
+           imprimir(print);
         })
         .catch((error) => {
             console.log(error);
@@ -285,14 +282,14 @@ function pintarFacturas() {
 function pintarNumerosDeSerie() {
     displayCartonesHabilitados.innerHTML = "";
     seriesHabilitadas.forEach((element) => {
-        displayCartonesHabilitados.innerHTML += `<tr class="bg-stone-200 border-b"><th scope="row" class="
+        displayCartonesHabilitados.innerHTML += `<tr class="bg-stone-200 border-b"><td scope="row" class="
               py-1
               px-6
               font-medium
               text-gray-900
               uppercase
               whitespace-nowrap
-            "><p hidden>${element}</p>SERIE Nº${element}</th><td class="
+            "><p hidden>${element}</p>SERIE Nº${element}</td><td class="
                 py-1
                 px-6
                 flex
@@ -376,12 +373,14 @@ function loadNit() {
                 nombre.disabled = true;
                 fechaNacimiento.disabled = true;
                 telefono.disabled = found.telefono===0?false:true;
-                email.disabled = found.telefono==='@'?false:true;
+                email.disabled = found.email==='@'?false:true;
             } else {
                 avisoNit.innerText =
                     "¡El NIT no se encontró en la base de datos!.";
                 nombre.value = "";
                 fechaNacimiento.value = "";
+                telefono.value = "";
+                email.value = "";
                 nombre.disabled = false;
                 fechaNacimiento.disabled = false;
                 telefono.disabled = false;
@@ -500,10 +499,4 @@ function avisoFinal() {
 primer sorteo en fecha 15/09/2022</p></div>`;
 }
 
-function printContent() {
-    var restorepage = document.body.innerHTML;
-    var printcontent = document.getElementById("print").innerHTML;
-    document.body.innerHTML = printcontent;
-    window.print();
-    document.body.innerHTML = restorepage;
-}
+
