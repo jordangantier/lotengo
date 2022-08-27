@@ -51,9 +51,9 @@ class BuscaBoletoController extends Controller
             $descontar = Boleto::find($numero->id);
             $descontar->contador = $numero->contador - 1;
             $descontar->update();
-            $data = ['msg' => 'Se actualizó el contador de números acertados.'];
-            return response()->json($data, 200);
         }
+        $data = ['msg' => 'Se actualizó el contador de números acertados.'];
+        return response()->json($data, 200);
         //return $result;
     }
 }
