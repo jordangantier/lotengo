@@ -89,7 +89,7 @@ for ($i = 1; $i <= 15000; $i++) {
     $hasher = $concurso . '|' . $serie . '|' . $numeros[1][0] . '|' . $numeros[2][0] . '|' . $numeros[3][0];
     $hash = openssl_encrypt($hasher, $ciphering, $encryption_key, $options, $encryption_iv);
 
-    $sql = "INSERT INTO boletos (habilitado, concurso, serie, hasher, hash, numeros, contador, created_at) VALUES ($habilitado, $concurso, $serie, '$hasher', '$hash', '$jsonNums', 15, CURRENT_TIMESTAMP())";
+    $sql = "INSERT INTO boletos (habilitado, concurso, serie, hasher, hash, numeros, contador1, contador2, contador3, created_at) VALUES ($habilitado, $concurso, $serie, '$hasher', '$hash', '$jsonNums', 15, 15, 15, CURRENT_TIMESTAMP())";
     if (mysqli_query($conn, $sql)) {
         echo $nums1 . ';';
         echo $nums2 . ';';

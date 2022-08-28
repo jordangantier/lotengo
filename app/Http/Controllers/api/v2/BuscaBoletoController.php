@@ -49,12 +49,14 @@ class BuscaBoletoController extends Controller
             $data = ['msg' => 'No se encontró el número de juego.'];
             return response()->json($data, 200);
         }
+
         //Busca los boletos habilitados para la serie y el sorteo.
         $result = Boleto::select('id', $nameContador)
             ->whereBetween('id', [$sort1, $sort2])
             ->where('habilitado', 1)
             ->whereJsonContains('numeros->' . $juego, json_decode($numero))
             ->get();
+
         if (json_decode($result) == []) {
             $data = ['msg' => 'No se encontraron boletos habilitados.'];
             return response()->json($data, 200);
