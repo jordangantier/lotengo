@@ -28,7 +28,11 @@ class CreateBoletos extends Migration
             $table->string('hasher', 32);
             $table->string('hash', 32);
             $table->json('numeros');
-            $table->tinyInteger('contador')
+            $table->tinyInteger('contador1')
+                ->default(15);
+            $table->tinyInteger('contador2')
+                ->default(15);
+            $table->tinyInteger('contador3')
                 ->default(15);
             $table->timestamps();
         });

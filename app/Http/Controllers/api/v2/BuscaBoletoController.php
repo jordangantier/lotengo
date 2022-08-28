@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Boleto;
 
+use App\Models\Sorteo;
+
 class BuscaBoletoController extends Controller
 {
     public function index()
@@ -22,38 +24,95 @@ class BuscaBoletoController extends Controller
         return $result;
     }
 
-    public function show($numero)
+    public function show($sorteo, $juego, $numero)
     {
-        $result = Boleto::select('id', 'contador')
-            ->whereBetween('id', [1, 2500])
+        //Establece que contador deberá ser utilizado.
+        $nameContador = 'contador' . $juego;
+
+        //Revisa si existe el número de sorteo.
+        if ($sorteo == 1) {
+            $sort1 = 1;
+            $sort2 = 2500;
+        } elseif ($sorteo == 2) {
+            $sort1 = 2501;
+            $sort2 = 5000;
+        } elseif ($sorteo == 3) {
+            $sort1 = 5001;
+            $sort2 = 7500;
+        } else {
+            $data = ['msg' => 'No se encontró este sorteo.'];
+            return response()->json($data, 200);
+        }
+
+        //Revisa si se encontró el número de juego
+        if (!$juego || $juego < 1 || $juego > 3) {
+            $data = ['msg' => 'No se encontró el número de juego.'];
+            return response()->json($data, 200);
+        }
+        //Busca los boletos habilitados para la serie y el sorteo.
+        $result = Boleto::select('id', $nameContador)
+            ->whereBetween('id', [$sort1, $sort2])
             ->where('habilitado', 1)
-            ->whereJsonContains('numeros->1', json_decode($numero))
+            ->whereJsonContains('numeros->' . $juego, json_decode($numero))
             ->get();
         if (json_decode($result) == []) {
-            $data = ['msg' => 'No se encontraron boletos con este número.'];
+            $data = ['msg' => 'No se encontraron boletos habilitados.'];
             return response()->json($data, 200);
         }
         return $result;
     }
 
-    public function update($numero)
+    public function update($sorteo, $juego, $numero)
     {
-        $result = Boleto::select('id', 'contador')
-            ->whereBetween('id', [1, 2500])
+        //Establece que contador deberá ser utilizado.
+        $nameContador = 'contador' . $juego;
+
+        //Revisa si existe el número de sorteo.
+        if ($sorteo == 1) {
+            $sort1 = 1;
+            $sort2 = 2500;
+        } elseif ($sorteo == 2) {
+            $sort1 = 2501;
+            $sort2 = 5000;
+        } elseif ($sorteo == 3) {
+            $sort1 = 5001;
+            $sort2 = 7500;
+        } else {
+            $data = ['msg' => 'No se encontró este sorteo.'];
+            return response()->json($data, 200);
+        }
+
+        //Revisa si se encontró el número de juego.
+        if (!$juego || $juego < 1 || $juego > 3) {
+            $data = ['msg' => 'No se encontró el número de juego.'];
+            return response()->json($data, 200);
+        }
+
+        $result = Boleto::select('id', $nameContador)
+            ->whereBetween('id', [$sort1, $sort2])
             ->where('habilitado', 1)
-            ->whereJsonContains('numeros->1', json_decode($numero))
+            ->whereJsonContains('numeros->' . $juego, json_decode($numero))
             ->get();
+
         if (json_decode($result) == []) {
             $data = ['msg' => 'No se encontró el número en ninguno de los boletos.'];
             return response()->json($data, 200);
         }
-        foreach ($result as $numero) {
-            $descontar = Boleto::find($numero->id);
-            $descontar->contador = $numero->contador - 1;
+
+        foreach ($result as $num) {
+            $descontar = Boleto::find($num->id);
+            $descontar->$nameContador = $num->$nameContador - 1;
             $descontar->update();
         }
+
+        //Guarda el número en la tabla de sorteos.
+        $sorteos = new Sorteo;
+        $sorteos->sorteo = $sorteo;
+        $sorteos->jugada = $juego;
+        $sorteos->numero = $numero;
+        $sorteos->save();
+
         $data = ['msg' => 'Se actualizó el contador de números acertados.'];
         return response()->json($data, 200);
-        //return $result;
     }
 }
