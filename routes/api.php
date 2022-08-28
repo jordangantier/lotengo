@@ -21,8 +21,6 @@ Route::get('/habilitados', [BoletoController::class, 'index']);
 
 Route::post('/insertardata', [TransaccionController::class, 'store']);
 
-Route::get('/generador', [BuscaBoletoController::class, 'run']);
-
 Route::get('/buscaboletos', [BuscaBoletoController::class, 'index']);
 Route::get('/buscaboletos/{sorteo}/{juego}/{numero}', [BuscaBoletoController::class, 'show']);
 Route::put('/buscaboletos/{sorteo}/{juego}/{numero}/update', [BuscaBoletoController::class, 'update']);
