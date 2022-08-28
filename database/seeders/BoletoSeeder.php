@@ -8,11 +8,6 @@ use App\Models\Boleto;
 
 class BoletoSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         //Marcas generadas
@@ -31,15 +26,8 @@ class BoletoSeeder extends Seeder
         // Storing the encryption key 
         $encryption_key = "WHEKE.DEV@Las Brisas";
 
-
         //Genera los 10000 boletos
         for ($i = 1; $i <= 15000; $i++) {
-
-            //Pone todos los boletos generados como deshabilitados.
-            $habilitado = 0;
-
-            //Genera la serie
-            $serie = sprintf("%05d", $i);
 
             //Coloca los boletos en su determinado concurso.
             if ($i >= 1 && $i <= 2500) {
@@ -66,41 +54,22 @@ class BoletoSeeder extends Seeder
                 $numeros[$n] = array_rand($boletos, 15);
             }
 
-            //Genera el array de números
-            /*
-            $nums1 = null;
-            foreach ($numeros[1] as $num) {
-                $nums1 .= $num . ',';
-            }
-            $nums1 = substr($nums1, 0, -1);
-
-            $nums2 = null;
-            foreach ($numeros[2] as $num) {
-                $nums2 .= $num . ',';
-            }
-            $nums2 = substr($nums2, 0, -1);
-
-            $nums3 = null;
-            foreach ($numeros[3] as $num) {
-                $nums3 .= $num . ',';
-            }
-            $nums3 = substr($nums3, 0, -1);
-            */
+            //Genera el json con todos los números.
+            $array_numeros = json_encode(array($numeros[1], $numeros[2], $numeros[3]));
 
             //Generación de Hash.
-            $hasher = $concurso . '|' . $serie . '|' . $numeros[1][0] . '|' . $numeros[2][0] . '|' . $numeros[3][0];
+            $hasher = $concurso . '|' . $i . '|' . $numeros[1][0] . '|' . $numeros[2][0] . '|' . $numeros[3][0];
             $hash = openssl_encrypt($hasher, $ciphering, $encryption_key, $options, $encryption_iv);
 
+            /*
             Boleto::create([
-                'habilitado' => $habilitado,
                 'concurso' => $concurso,
-                'serie' => $serie,
+                'serie' => $i,
                 'hash' => $hash,
-                'array1' => $numeros[1],
-                'array2' => $numeros[2],
-                'array3' => $numeros[3],
-                'contador' => 15,
+                'hasher' => $hasher,
+                'numeros' => $array_numeros,
             ]);
+            */
         }
     }
 }

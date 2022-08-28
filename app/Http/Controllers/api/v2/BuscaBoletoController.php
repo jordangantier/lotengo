@@ -13,8 +13,8 @@ class BuscaBoletoController extends Controller
 {
     public function index()
     {
-        $result = Boleto::select('id', 'contador')
-            ->whereBetween('id', [1, 2500])
+        $result = Boleto::select('id', 'concurso', 'contador1', 'contador2', 'contador3', 'numeros')
+            ->whereBetween('id', [1, 7500])
             ->where('habilitado', 1)
             ->get();
         if (json_decode($result) == []) {
@@ -69,7 +69,7 @@ class BuscaBoletoController extends Controller
         //Establece que contador deberá ser utilizado.
         $nameContador = 'contador' . $juego;
 
-        //Revisa si existe el número de sorteo.
+        //Revisa si existe el número de sorteo y asigna el rango de boletos para dicho sorteo.
         if ($sorteo == 1) {
             $sort1 = 1;
             $sort2 = 2500;
@@ -90,6 +90,7 @@ class BuscaBoletoController extends Controller
             return response()->json($data, 200);
         }
 
+        //Busca todas las coincidencias en la tabla de boletos.
         $result = Boleto::select('id', $nameContador)
             ->whereBetween('id', [$sort1, $sort2])
             ->where('habilitado', 1)
@@ -101,6 +102,7 @@ class BuscaBoletoController extends Controller
             return response()->json($data, 200);
         }
 
+        //Actualiza el contador de la jugada a la cantidad de números faltantes para hacer bingo.
         foreach ($result as $num) {
             $descontar = Boleto::find($num->id);
             $descontar->$nameContador = $num->$nameContador - 1;

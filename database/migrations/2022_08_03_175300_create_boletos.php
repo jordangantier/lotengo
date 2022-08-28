@@ -36,7 +36,6 @@ class CreateBoletos extends Migration
                 ->default(15);
             $table->timestamps();
         });
-        DB::statement('ALTER TABLE boletos CHANGE serie serie INT(5) UNSIGNED ZEROFILL NOT NULL');
     }
 
     /**
