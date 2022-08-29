@@ -5,6 +5,7 @@
 /public/.hashes.php.bak
 /storage/*.key
 /vendor
+/docs
 .env
 .env.backup
 .phpunit.result.cache
