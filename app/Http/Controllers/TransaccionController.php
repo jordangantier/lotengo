@@ -14,12 +14,6 @@ use App\Models\Boleto;
 
 class TransaccionController extends Controller
 {
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         if ($request['id_participante'] == "") {
@@ -73,6 +67,7 @@ class TransaccionController extends Controller
                 $habilitar->update();
             }
         }
-        return json_decode('[{"msg":"OK"}]');
+        $data = ['msg' => 'Transacción guardada correctamente.'];
+        return response()->json($data, 200);
     }
 }
